@@ -18,8 +18,18 @@ function joke(user) {
     [user]);
 }
 
-function privateMessage(userTo, userFrom, message) {
+function priv(userTo, userFrom, message) {
+  console.log('userTo', userTo)
+  console.log('userFrom', userFrom)
+  userTo.room.whisper({
+    name: userFrom,
+    type: 'chat',
+    text: message
+  }[userTo, userFrom]);
 
 }
 
-module.exports = { joke };
+module.exports = {
+  joke,
+  priv
+};

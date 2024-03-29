@@ -56,6 +56,7 @@ class ChatUser {
    * */
 
   handleChat(text) {
+    console.log('text in handleChat is ', text)
     if (text.startsWith('/')) {
       // parses out the '/'
       this.handleCommand(text.slice(1).split(" "));
@@ -77,10 +78,15 @@ class ChatUser {
   handleCommand(text) {
     // check the text
     // call other function based on text
-    const commands = { joke: Commands.joke };//joke function
+    const commands = {
+      joke: Commands.joke,
+      priv: Commands.priv
+    };
 
     if (text[0] in commands) {
-      commands[text](this);
+      console.log('person who typed command', this)
+      console.log('text[0]', text[0])
+      commands[text[0]](this.name);
     } else {
       this.room.whisper({
         name: "Server",
@@ -103,7 +109,7 @@ class ChatUser {
 
   handleMessage(jsonData) {
     let msg = JSON.parse(jsonData);
-
+    console.log('mesg text in handle mesg is ', msg.text)
     if (msg.type === "join") this.handleJoin(msg.name);
     else if (msg.type === "chat") this.handleChat(msg.text);
     else throw new Error(`bad message: ${msg.type}`);
