@@ -4,6 +4,7 @@
 
 // Room is an abstraction of a chat channel
 const Room = require("./Room");
+const Commands = require("./commands");
 
 /** ChatUser is a individual connection from client -> server to chat. */
 
@@ -57,20 +58,37 @@ class ChatUser {
   handleChat(text) {
     if (text.startsWith('/')) {
       // parses out the '/'
-      this.handleCommand(text.slice(1));
-    }
+      this.handleCommand(text.slice(1).split(" "));
+    } else {
 
-    this.room.broadcast({
-      name: this.name,
-      type: "chat",
-      text: text,
-    });
+      this.room.broadcast({
+        name: this.name,
+        type: "chat",
+        text: text,
+      });
+    }
   }
+
+  /** Handle a command: calls specific command function.
+   *
+   * @param text {string} command to run
+   * */
 
   handleCommand(text) {
     // check the text
     // call other function based on text
-    const commands = { joke: pass };//joke function
+    const commands = { joke: Commands.joke };//joke function
+
+    if (text[0] in commands) {
+      commands[text](this);
+    } else {
+      this.room.whisper({
+        name: "Server",
+        type: "chat",
+        text: `Command ${text} does not exist`
+      },
+        [this]);
+    }
   }
 
   /** Handle messages from client:

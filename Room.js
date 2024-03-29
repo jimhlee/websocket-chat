@@ -67,6 +67,17 @@ class Room {
       member.send(JSON.stringify(data));
     }
   }
+
+  /** Send message to a specific subset of users.
+  *
+  * @param data {string} message to send
+  * @param users {array} list of users to see message
+  * */
+  whisper(data, users) {
+    for (let user of users) {
+      user.send(JSON.stringify(data));
+    }
+  }
 }
 
 module.exports = Room;
