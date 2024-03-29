@@ -18,4 +18,8 @@ function joke(user) {
     [user]);
 }
 
+function privateMessage(userTo, userFrom, message) {
+
+}
+
 module.exports = { joke };
